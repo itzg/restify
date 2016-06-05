@@ -1,0 +1,3 @@
+test:
+  post:
+    - cp $HOME/.go_project/bin/* $CIRCLE_ARTIFACTS
