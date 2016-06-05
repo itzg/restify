@@ -12,7 +12,7 @@ import (
 
 var (
 	url = kingpin.Arg("url", "A URL to RESTify into JSON").Required().URL()
-	byClass = kingpin.Flag("class", "If specified, the first element encountered with this class will be extracted.").String()
+	byClass = kingpin.Flag("class", "If specified, first-level elements encountered with this class will be extracted.").String()
 )
 
 func main() {
@@ -29,15 +29,14 @@ func main() {
 	}
 
 	var asJson []byte
-	var subset *html.Node
+	var subset []*html.Node
 	if *byClass != "" {
-		var ok bool
-		subset, ok = scrape.Find(root, scrape.ByClass(*byClass))
-		if !ok {
+		subset = scrape.FindAll(root, scrape.ByClass(*byClass))
+		if len(subset) == 0 {
 			log.Fatalf("Unable to find an element with the class '%s'\n", *byClass)
 		}
 	} else {
-		subset = root
+		subset = append(subset, root)
 	}
 	if asJson, err = convertToJson(subset); err != nil {
 		log.Fatal("Failed to parse HTML into JSON", err)
