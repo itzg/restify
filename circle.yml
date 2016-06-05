@@ -1,6 +1,6 @@
 test:
   post:
-    - cp $CIRCLE_PROJECT_REPONAME/restify $CIRCLE_ARTIFACTS
+    - cp ~/$CIRCLE_PROJECT_REPONAME/restify $CIRCLE_ARTIFACTS
 
 deployment:
  release:
