@@ -1,6 +1,6 @@
 test:
   post:
-    - git describe --tags
+    - cp $CIRCLE_PROJECT_REPONAME/restify $CIRCLE_ARTIFACTS
 
 deployment:
  release:
