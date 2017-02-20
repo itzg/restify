@@ -5,16 +5,16 @@ containerInfo:
 stages:
   build:
     workDir: /go/src/github.com/itzg/restify
-  steps:
-    - type: checkout
-    - type: shell
-      command: go test -v ./...
-    - type: deploy
-      command: |
-        tag=$(git describe --exact-match --tags)
-        if [ $? = 0 ]; then
-          go get github.com/mitchellh/gox
-          go get github.com/tcnksm/ghr
-          CGO_ENABLED=0 gox -ldflags "-X main.Version=$BUILD_VERSION -X main.BuildDate=$BUILD_DATE" -output "dist/${CIRCLE_PROJECT_REPONAME}_{{.OS}}_{{.Arch}}"
-          ghr -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME --replace $tag dist/
-        fi
+    steps:
+      - type: checkout
+      - type: shell
+        command: go test -v ./...
+      - type: deploy
+        command: |
+          tag=$(git describe --exact-match --tags)
+          if [ $? = 0 ]; then
+            go get github.com/mitchellh/gox
+            go get github.com/tcnksm/ghr
+            CGO_ENABLED=0 gox -ldflags "-X main.Version=$BUILD_VERSION -X main.BuildDate=$BUILD_DATE" -output "dist/${CIRCLE_PROJECT_REPONAME}_{{.OS}}_{{.Arch}}"
+            ghr -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME --replace $tag dist/
+          fi
