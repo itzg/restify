@@ -18,6 +18,6 @@ stages:
             go get github.com/mitchellh/gox
             go get github.com/tcnksm/ghr
             CGO_ENABLED=0 gox -ldflags "-X main.Version=$BUILD_VERSION -X main.BuildDate=$BUILD_DATE" \
-              -output "dist/${CIRCLE_PROJECT_REPONAME}_{{.OS}}_{{.Arch}}"
+              -output "dist/restify_{{.OS}}_{{.Arch}}"
             ghr -u $CIRCLE_USERNAME -r restify --replace $tag dist/
           fi
