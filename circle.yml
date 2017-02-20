@@ -10,7 +10,7 @@ stages:
       - type: shell
         command: |
           go get
-          go test -v ./...
+          go install
       - type: deploy
         command: |
           tag=$(git describe --exact-match --tags)
