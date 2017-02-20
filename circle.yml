@@ -8,7 +8,9 @@ stages:
     steps:
       - type: checkout
       - type: shell
-        command: go test -v ./...
+        command: |
+          go get
+          go test -v ./...
       - type: deploy
         command: |
           tag=$(git describe --exact-match --tags)
