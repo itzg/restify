@@ -17,7 +17,7 @@ build: vendor
 	go build
 
 snapshot: vendor ${GORELEASER}
-	${GORELEASER} --snapshot --skip-validate
+	${GORELEASER} --snapshot --skip-validate --rm-dist
 
 release: vendor ${GORELEASER}
 	${GORELEASER}
