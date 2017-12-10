@@ -27,10 +27,7 @@ workflows:
   build-and-release:
     jobs:
       - build:
-          filters:
-            branches:
-              only: /.*/
       - release:
           filters:
             tags:
-              only: /[0-9].*/  release:
+              only: /[0-9].*/
