@@ -26,7 +26,7 @@ workflows:
   version: 2
   build-and-release:
     jobs:
-      - build:
+      - build
       - release:
           filters:
             tags:
