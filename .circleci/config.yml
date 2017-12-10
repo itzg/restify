@@ -26,7 +26,10 @@ workflows:
   version: 2
   build-and-release:
     jobs:
-      - build
+      - build:
+          filters:
+            branches:
+              only: /.*/
       - release:
           filters:
             tags:
