@@ -1,4 +1,5 @@
 /.idea/
+/projectFilesBackup/
 
 ## File-based project format:
 *.iws
@@ -34,3 +35,7 @@ _testmain.go
 *.exe
 *.test
 *.prof
+
+/restify
+/vendor/
+/dist/
