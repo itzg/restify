@@ -1,5 +1,8 @@
 builds:
   - binary: restify
+    env:
+      # to allow for alpine/musl use
+      - CGO_ENABLED=0
     goos:
       - windows
       - darwin
