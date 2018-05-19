@@ -17,3 +17,8 @@ changelog:
       - '^ci:'
 dockers:
   - image: itzg/restify
+    goos: linux
+    goarch: amd64
+    tag_templates:
+    - "{{ .Tag }}"
+    - latest
