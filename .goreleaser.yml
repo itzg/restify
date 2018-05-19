@@ -9,8 +9,11 @@ builds:
       - linux
     goarch:
       - amd64
-      - arm64
+      - arm
 changelog:
   filters:
     exclude:
       - '^build:'
+      - '^ci:'
+dockers:
+  - image: itzg/restify

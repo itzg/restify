@@ -1,8 +1,0 @@
-package: github.com/itzg/restify
-import:
-- package: github.com/yhat/scrape
-- package: golang.org/x/net
-  subpackages:
-  - html
-- package: gopkg.in/alecthomas/kingpin.v2
-  version: ^2.2.5
