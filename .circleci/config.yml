@@ -2,9 +2,7 @@ version: 2
 
 defaults: &defaults
   docker:
-    - image: circleci/golang:1.10.2
-
-  working_directory: /go/src/github.com/itzg/restify
+    - image: circleci/golang:1.12
 
 jobs:
   build:
@@ -14,25 +12,19 @@ jobs:
 
       - restore_cache:
           keys:
-            - cache-{{ arch }}-{{ .Branch }}-{{ checksum "Gopkg.lock" }}
-            - cache-{{ arch }}-{{ .Branch }}
-            - cache
-
-      - run: dep ensure -vendor-only
-
-      - save_cache:
-          key: cache-{{ arch }}-{{ .Branch }}-{{ checksum "Gopkg.lock" }}
-          paths:
-            - vendor
+            - cache-{{ arch }}-{{ .Branch }}-{{ checksum "go.sum" }}
 
       - run: go test
+
+      - save_cache:
+          key: cache-{{ arch }}-{{ .Branch }}-{{ checksum "go.sum" }}
+          paths:
+            - /go/pkg
 
   release:
     <<: *defaults
     steps:
       - checkout
-
-      - run: dep ensure -vendor-only
 
       - setup_remote_docker
       - run:

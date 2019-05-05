@@ -1,3 +1,7 @@
+project_name: restify
+before:
+  hooks:
+    - go mod download
 builds:
   - binary: restify
     env:
@@ -10,18 +14,23 @@ builds:
     goarch:
       - amd64
       - arm
+      - arm64
 changelog:
   filters:
     exclude:
       - '^build:'
       - '^ci:'
 dockers:
-  - image: itzg/restify
+  - image_templates:
+      - "itzg/restify:latest"
+      - "itzg/restify:{{.Tag}}"
     goos: linux
     goarch: amd64
-    tag_templates:
-    - "{{ .Tag }}"
-    - latest
+  - image_templates:
+      - "itzg/restify:arm64"
+      - "itzg/restify:{{.Tag}}-arm64"
+    goos: linux
+    goarch: arm64
 scoop:
   bucket:
     owner: itzg
