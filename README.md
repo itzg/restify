@@ -1,6 +1,8 @@
 
 A little utility (written in Go) that enables REST-like access to HTML pages by scraping and parsing them into JSON.
 
+[[![CircleCI](https://circleci.com/gh/itzg/restify/tree/master.svg?style=svg)](https://circleci.com/gh/itzg/restify/tree/master)](https://app.circleci.com/pipelines/github/itzg/restify?branch=master)
+
 ```
 usage: restify [<flags>] <url>
 
