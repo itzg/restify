@@ -29,6 +29,11 @@ var (
 		String()
 	showVersion = kingpin.Flag("version", "Print version and exit").
 			Bool()
+	debug = kingpin.Flag("debug", "Enable debugging output").
+		Bool()
+	userAgent = kingpin.Flag("user-agent", "user-agent header to provide with request").
+			Default("itzg/restify").
+			String()
 )
 
 func main() {
@@ -40,7 +45,15 @@ func main() {
 		os.Exit(0)
 	}
 
-	resp, err := http.Get((*url).String())
+	request, err := http.NewRequest("GET", (*url).String(), nil)
+	if err != nil {
+		log.Fatal("Failed to create new request", err)
+	}
+
+	request.Header.Set("accept", "*/*")
+	request.Header.Set("user-agent", *userAgent)
+
+	resp, err := http.DefaultClient.Do(request)
 	if err != nil {
 		log.Fatal("Failed to get from URL", err)
 	}
@@ -89,7 +102,9 @@ func matchByAttribute(key, value string) scrape.Matcher {
 	return func(node *html.Node) bool {
 		if node.Type == html.ElementNode {
 			result := scrape.Attr(node, key)
-			//fmt.Printf("Saw %s and result %s with attrs %+v\n", node.Data, result, node.Attr)
+			if *debug {
+				fmt.Printf("Saw %s and result %s with attrs %+v\n", node.Data, result, node.Attr)
+			}
 			if result != "" && (value == "" || value == result) {
 				return true
 			}
