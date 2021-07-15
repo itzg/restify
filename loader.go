@@ -8,9 +8,20 @@ import (
 	"net/url"
 )
 
+type RequestConfig func(*http.Request)
+
+// WithHeaders configures additional headers in the request used in LoadContent
+func WithHeaders(headers map[string]string) RequestConfig {
+	return func(request *http.Request) {
+		for k, v := range headers {
+			request.Header.Set(k, v)
+		}
+	}
+}
+
 // LoadContent retrieves the HTML content from the given url.
 // The userAgent is optional, but if provided should conform with https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent
-func LoadContent(url *url.URL, userAgent string) (*html.Node, error) {
+func LoadContent(url *url.URL, userAgent string, configs ...RequestConfig) (*html.Node, error) {
 	request, err := http.NewRequest("GET", url.String(), nil)
 	if err != nil {
 		return nil, fmt.Errorf("Failed to request: %w", err)
@@ -19,6 +30,9 @@ func LoadContent(url *url.URL, userAgent string) (*html.Node, error) {
 	request.Header.Set("accept", "*/*")
 	if userAgent != "" {
 		request.Header.Set("user-agent", userAgent)
+	}
+	for _, config := range configs {
+		config(request)
 	}
 
 	resp, err := http.DefaultClient.Do(request)

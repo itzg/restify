@@ -33,6 +33,8 @@ var (
 	userAgent = kingpin.Flag("user-agent", "user-agent header to provide with request").
 			Default("restify/" + version).
 			String()
+	headers = kingpin.Flag("headers", "Additional headers to pass with request").
+		StringMap()
 )
 
 func main() {
@@ -44,7 +46,11 @@ func main() {
 		os.Exit(0)
 	}
 
-	root, err := restify.LoadContent(*url, *userAgent)
+	configs := make([]restify.RequestConfig, 0)
+	if headers != nil {
+		configs = append(configs, restify.WithHeaders(*headers))
+	}
+	root, err := restify.LoadContent(*url, *userAgent, configs...)
 	if err != nil {
 		log.Fatal("Failed to load content: ", err)
 	}
