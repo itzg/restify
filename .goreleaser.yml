@@ -4,6 +4,7 @@ before:
     - go mod download
 builds:
   - binary: restify
+    main: ./cmd
     env:
       # to allow for alpine/musl use
       - CGO_ENABLED=0

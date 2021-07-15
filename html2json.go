@@ -1,34 +1,44 @@
-package main
+package restify
 
 import (
 	"bytes"
-	"golang.org/x/net/html"
 	"encoding/json"
-	"strings"
+	"golang.org/x/net/html"
 	"log"
+	"strings"
 )
 
-func convertToJson(nodes []*html.Node) ([]byte, error) {
-	rootJsonNodes := make([]jsonNode, len(nodes))
+// ConvertHtmlToJson the given HTML nodes into JSON content where each
+// HTML node is represented by the JsonNode structure.
+func ConvertHtmlToJson(nodes []*html.Node) ([]byte, error) {
+	rootJsonNodes := make([]JsonNode, len(nodes))
 
-	for i,n := range nodes {
+	for i, n := range nodes {
 		rootJsonNodes[i].populateFrom(n)
 	}
 
 	return json.Marshal(rootJsonNodes)
 }
 
-type jsonNode struct {
+// JsonNode is a JSON-ready representation of an HTML node.
+type JsonNode struct {
+	// Name is the name/tag of the element
 	Name string `json:"name,omitempty"`
+	// Attributes contains the attributs of the element other than id, class, and href
 	Attributes map[string]string `json:"attributes,omitempty"`
+	// Class contains the class attribute of the element
 	Class string `json:"class,omitempty"`
+	// Id contains the id attribute of the element
 	Id string `json:"id,omitempty"`
+	// Href contains the href attribute of the element
 	Href string `json:"href,omitempty"`
-	Text       string `json:"text,omitempty"`
-	Elements   []jsonNode `json:"elements,omitempty"`
+	// Text contains the inner text of the element
+	Text string `json:"text,omitempty"`
+	// Elements contains the child elements of the element
+	Elements []JsonNode `json:"elements,omitempty"`
 }
 
-func (n *jsonNode) populateFrom(htmlNode *html.Node) *jsonNode {
+func (n *JsonNode) populateFrom(htmlNode *html.Node) *JsonNode {
 	switch htmlNode.Type {
 	case html.ElementNode:
 		n.Name = htmlNode.Data
@@ -78,9 +88,9 @@ func (n *jsonNode) populateFrom(htmlNode *html.Node) *jsonNode {
 
 		case html.ElementNode:
 			if n.Elements == nil {
-				n.Elements = make([]jsonNode,0)
+				n.Elements = make([]JsonNode, 0)
 			}
-			var jsonElemNode jsonNode
+			var jsonElemNode JsonNode
 			jsonElemNode.populateFrom(e)
 			n.Elements = append(n.Elements, jsonElemNode)
 		}

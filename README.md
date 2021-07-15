@@ -1,21 +1,19 @@
 
-A little utility (written in Go) that enables REST-like access to HTML pages by scraping and parsing them into JSON.
+A little utility/library (written in Go) that enables REST-like access to HTML pages by scraping and parsing them into JSON.
 
-[[![CircleCI](https://circleci.com/gh/itzg/restify/tree/master.svg?style=svg)](https://circleci.com/gh/itzg/restify/tree/master)](https://app.circleci.com/pipelines/github/itzg/restify?branch=master)
+[![CircleCI](https://circleci.com/gh/itzg/restify/tree/master.svg?style=svg)](https://circleci.com/gh/itzg/restify/tree/master)
 
 ```
 usage: restify [<flags>] <url>
 
 Flags:
-  --help                 Show context-sensitive help (also try --help-long and
-                         --help-man).
-  --class=CLASS          If specified, first-level elements encountered with
-                         this class will be extracted.
-  --id=ID                If specified, the element with this id will be
-                         extracted.
-  --attribute=ATTRIBUTE  If specified, as key=value, the element with the given
-                         attribute name set to the given value is extracted.
-  --version              Print version and exit
+  --help                      Show context-sensitive help (also try --help-long and --help-man).
+  --class=CLASS               If specified, first-level elements encountered with this class will be extracted.
+  --id=ID                     If specified, the element with this id will be extracted.
+  --attribute=ATTRIBUTE       If specified, as key=value, the element with the given attribute name set to the given value is extracted.
+  --version                   Print version and exit
+  --debug                     Enable debugging output
+  --user-agent="restify/1.4.0"  user-agent header to provide with request
 
 Args:
   <url>  A URL to RESTify into JSON
@@ -63,3 +61,7 @@ or to grab just the Linux instance:
 ```bash
 restify --attribute=data-platform=serverBedrockLinux https://www.minecraft.net/en-us/download/server/bedrock/
 ```
+
+## Using as a library
+
+The package `github.com/itzg/restify` provides the library functions used by the command-line utility.

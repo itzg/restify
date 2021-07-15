@@ -2,14 +2,13 @@ package main
 
 import (
 	"fmt"
-	"net/http"
-	"strings"
-
+	"github.com/itzg/restify"
 	"github.com/yhat/scrape"
 	"golang.org/x/net/html"
 	"gopkg.in/alecthomas/kingpin.v2"
 	"log"
 	"os"
+	"strings"
 )
 
 var (
@@ -32,7 +31,7 @@ var (
 	debug = kingpin.Flag("debug", "Enable debugging output").
 		Bool()
 	userAgent = kingpin.Flag("user-agent", "user-agent header to provide with request").
-			Default("itzg/restify").
+			Default("restify/" + version).
 			String()
 )
 
@@ -45,53 +44,40 @@ func main() {
 		os.Exit(0)
 	}
 
-	request, err := http.NewRequest("GET", (*url).String(), nil)
+	root, err := restify.LoadContent(*url, *userAgent)
 	if err != nil {
-		log.Fatal("Failed to create new request", err)
+		log.Fatal("Failed to load content: ", err)
 	}
 
-	request.Header.Set("accept", "*/*")
-	request.Header.Set("user-agent", *userAgent)
-
-	resp, err := http.DefaultClient.Do(request)
-	if err != nil {
-		log.Fatal("Failed to get from URL", err)
-	}
-	root, err := html.Parse(resp.Body)
-	if err != nil {
-		log.Fatal("Unable to parse HTML", err)
-	}
-
-	var asJson []byte
 	var subset []*html.Node
 	if *byId != "" {
-		elem, ok := scrape.Find(root, scrape.ById(*byId))
+		elem, ok := restify.FindSubsetById(root, *byId)
 		if !ok {
 			log.Fatalf("Unable to find an element with the ID '%s'\n", *byId)
 		}
 		subset = append(subset, elem)
 	} else if *byClass != "" {
-		subset = scrape.FindAll(root, scrape.ByClass(*byClass))
+		subset = restify.FindSubsetByClass(root, *byClass)
 		if len(subset) == 0 {
 			log.Fatalf("Unable to find an element with the class '%s'\n", *byClass)
 		}
 	} else if *byAttribute != "" {
 		keyVal := strings.SplitN(*byAttribute, "=", 2)
 		key := keyVal[0]
-		var value string
 		if len(keyVal) == 1 {
-			value = ""
+			subset = restify.FindSubsetByAttributeName(root, key)
 		} else {
-			value = keyVal[1]
+			subset = restify.FindSubsetByAttributeNameValue(root, key, keyVal[1])
 		}
-		subset = scrape.FindAll(root, matchByAttribute(key, value))
 		if len(subset) == 0 {
 			log.Fatalf("Unable to find an element with attribute matcher %s", *byAttribute)
 		}
 	} else {
 		subset = append(subset, root)
 	}
-	if asJson, err = convertToJson(subset); err != nil {
+
+	asJson, err := restify.ConvertHtmlToJson(subset)
+	if err != nil {
 		log.Fatal("Failed to parse HTML into JSON", err)
 	}
 
