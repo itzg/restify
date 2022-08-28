@@ -5,6 +5,7 @@ import (
 	"github.com/itzg/restify"
 	"github.com/yhat/scrape"
 	"golang.org/x/net/html"
+	"golang.org/x/net/html/atom"
 	"gopkg.in/alecthomas/kingpin.v2"
 	"log"
 	"os"
@@ -23,6 +24,7 @@ var (
 		String()
 	byId = kingpin.Flag("id", "If specified, the element with this id will be extracted.").
 		String()
+	byTagName   = kingpin.Flag("tag", "If specified, the first-level element with this tag name will be extracted.").String()
 	byAttribute = kingpin.Flag("attribute",
 		"If specified, as key=value, the element with the given attribute name set to the given value is extracted.").
 		String()
@@ -66,6 +68,11 @@ func main() {
 		subset = restify.FindSubsetByClass(root, *byClass)
 		if len(subset) == 0 {
 			log.Fatalf("Unable to find an element with the class '%s'\n", *byClass)
+		}
+	} else if *byTagName != "" {
+		subset = restify.FindSubnetByTagName(root, atom.Lookup([]byte(*byTagName)))
+		if len(subset) == 0 {
+			log.Fatalf("Unable to find an element with the tag name '%s'\n", *byTagName)
 		}
 	} else if *byAttribute != "" {
 		keyVal := strings.SplitN(*byAttribute, "=", 2)

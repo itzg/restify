@@ -10,6 +10,7 @@ Flags:
   --help                      Show context-sensitive help (also try --help-long and --help-man).
   --class=CLASS               If specified, first-level elements encountered with this class will be extracted.
   --id=ID                     If specified, the element with this id will be extracted.
+  --tag=TAGNAME               If specified, the first-level element with this tag name will be extracted.
   --attribute=ATTRIBUTE       If specified, as key=value, the element with the given attribute name set to the given value is extracted.
   --version                   Print version and exit
   --debug                     Enable debugging output
