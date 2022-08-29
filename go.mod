@@ -1,4 +1,4 @@
-module github.com/nxm/restify
+module github.com/itzg/restify
 
 go 1.12
 

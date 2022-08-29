@@ -73,9 +73,9 @@ func FindSubsetByAttributeNameValue(root *html.Node, attribute string, value str
 	return scrape.FindAll(root, matchByAttribute(attribute, value))
 }
 
-// FindSubnetByTagName retrieves the HTML nodes with the given tagName
-func FindSubnetByTagName(root *html.Node, tagName atom.Atom) []*html.Node {
-	return scrape.FindAll(root, scrape.ByTag(tagName))
+// FindSubsetByTagName retrieves the HTML nodes with the given tagName
+func FindSubsetByTagName(root *html.Node, tagName string) []*html.Node {
+	return scrape.FindAll(root, scrape.ByTag(atom.Lookup([]byte(tagName))))
 }
 
 func matchByAttribute(key, value string) scrape.Matcher {

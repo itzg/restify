@@ -5,7 +5,6 @@ import (
 	"github.com/itzg/restify"
 	"github.com/yhat/scrape"
 	"golang.org/x/net/html"
-	"golang.org/x/net/html/atom"
 	"gopkg.in/alecthomas/kingpin.v2"
 	"log"
 	"os"
@@ -70,7 +69,7 @@ func main() {
 			log.Fatalf("Unable to find an element with the class '%s'\n", *byClass)
 		}
 	} else if *byTagName != "" {
-		subset = restify.FindSubnetByTagName(root, atom.Lookup([]byte(*byTagName)))
+		subset = restify.FindSubsetByTagName(root, *byTagName)
 		if len(subset) == 0 {
 			log.Fatalf("Unable to find an element with the tag name '%s'\n", *byTagName)
 		}
