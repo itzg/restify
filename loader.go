@@ -2,10 +2,12 @@ package restify
 
 import (
 	"fmt"
-	"github.com/yhat/scrape"
-	"golang.org/x/net/html"
 	"net/http"
 	"net/url"
+
+	"github.com/yhat/scrape"
+	"golang.org/x/net/html"
+	"golang.org/x/net/html/atom"
 )
 
 type RequestConfig func(*http.Request)
@@ -69,6 +71,11 @@ func FindSubsetByAttributeName(root *html.Node, attribute string) []*html.Node {
 // FindSubsetByAttributeNameValue retrieves the HTML nodes that have the requested attribute with a specific value.
 func FindSubsetByAttributeNameValue(root *html.Node, attribute string, value string) []*html.Node {
 	return scrape.FindAll(root, matchByAttribute(attribute, value))
+}
+
+// FindSubsetByTagName retrieves the HTML nodes with the given tagName
+func FindSubsetByTagName(root *html.Node, tagName string) []*html.Node {
+	return scrape.FindAll(root, scrape.ByTag(atom.Lookup([]byte(tagName))))
 }
 
 func matchByAttribute(key, value string) scrape.Matcher {
