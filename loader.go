@@ -4,11 +4,14 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"time"
 
 	"github.com/yhat/scrape"
 	"golang.org/x/net/html"
 	"golang.org/x/net/html/atom"
 )
+
+const HttpRequestTimeout = time.Second * 60
 
 type RequestConfig func(*http.Request)
 
@@ -37,10 +40,12 @@ func LoadContent(url *url.URL, userAgent string, configs ...RequestConfig) (*htm
 		config(request)
 	}
 
+	http.DefaultClient.Timeout = HttpRequestTimeout
 	resp, err := http.DefaultClient.Do(request)
 	if err != nil {
 		return nil, fmt.Errorf("Failed to retrieve response: %w", err)
 	}
+	//goland:noinspection GoUnhandledErrorResult
 	defer resp.Body.Close()
 
 	root, err := html.Parse(resp.Body)
