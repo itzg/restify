@@ -10,6 +10,8 @@ on:
     branches: [ master ]
     paths-ignore:
       - README.md
+  schedule:
+    - cron: 0 4 * * SUN
 
 jobs:
   build:
