@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
+	"github.com/alecthomas/kingpin/v2"
 	"github.com/itzg/restify"
 	"github.com/yhat/scrape"
 	"golang.org/x/net/html"
-	"gopkg.in/alecthomas/kingpin.v2"
 	"log"
 	"os"
 	"strings"
