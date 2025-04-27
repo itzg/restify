@@ -1,3 +1,5 @@
+version: 2
+
 project_name: restify
 before:
   hooks:
@@ -51,6 +53,5 @@ scoops:
       owner: itzg
       name: scoop-bucket
       token: "{{ .Env.SCOOP_TAP_GITHUB_TOKEN }}"
-    folder: bucket
     license: Apache2
     description: Enables REST-like access to HTML pages by scraping and parsing them into JSON
