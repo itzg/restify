@@ -5,7 +5,7 @@ go 1.24.4
 require (
 	github.com/alecthomas/kingpin/v2 v2.4.0
 	github.com/yhat/scrape v0.0.0-20161128144610-24b7890b0945
-	golang.org/x/net v0.41.0
+	golang.org/x/net v0.42.0
 )
 
 require (
