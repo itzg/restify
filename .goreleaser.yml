@@ -24,6 +24,8 @@ builds:
     ignore:
       - goos: windows
         goarch: arm64
+      - goos: windows
+        goarch: arm
 changelog:
   filters:
     exclude:
