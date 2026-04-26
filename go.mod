@@ -7,7 +7,7 @@ toolchain go1.26.2
 require (
 	github.com/alecthomas/kingpin/v2 v2.4.0
 	github.com/yhat/scrape v0.0.0-20161128144610-24b7890b0945
-	golang.org/x/net v0.52.0
+	golang.org/x/net v0.53.0
 )
 
 require (
