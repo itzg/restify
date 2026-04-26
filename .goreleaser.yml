@@ -31,6 +31,8 @@ changelog:
     exclude:
       - '^build:'
       - '^ci:'
+release:
+  replace_existing_artifacts: true
 dockers:
   - image_templates:
       - "itzg/restify:latest"
