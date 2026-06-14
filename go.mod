@@ -1,8 +1,6 @@
 module github.com/itzg/restify
 
-go 1.26
-
-toolchain go1.26.2
+go 1.26.4
 
 require (
 	github.com/alecthomas/kingpin/v2 v2.4.0
