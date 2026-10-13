@@ -38,25 +38,27 @@ changelog:
       - '^ci:'
 release:
   replace_existing_artifacts: true
-dockers:
-  - image_templates:
-      - "itzg/restify:latest"
-      - "itzg/restify:{{.Tag}}"
-    goos: linux
-    goarch: amd64
-    use: buildx
-    build_flag_templates:
-      - "--pull"
-      - "--label=org.opencontainers.image.created={{.Date}}"
-      - "--label=org.opencontainers.image.title={{.ProjectName}}"
-      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
-      - "--label=org.opencontainers.image.version={{.Version}}"
-# alpine base image relies on https://github.com/docker-library/official-images#architectures-other-than-amd64
-#  - image_templates:
-#      - "itzg/restify:arm64"
-#      - "itzg/restify:{{.Tag}}-arm64"
-#    goos: linux
-#    goarch: arm64
+dockers_v2:
+  - images:
+      - "itzg/{{ .ProjectName }}"
+      - "ghcr.io/itzg/{{ .ProjectName }}"
+    dockerfile: Dockerfile.release
+    platforms:
+      - linux/amd64
+      - linux/arm64
+      - linux/arm/v6
+    tags:
+      - "{{ .Version }}"
+      - "{{ if not .Prerelease }}latest{{ end }}"
+    labels:
+      org.opencontainers.image.authors: "Geoff Bourne <itzgeoff@gmail.com>"
+      org.opencontainers.image.title: "restify"
+      org.opencontainers.image.description: "Routes Minecraft Java Edition client connections to backend servers based upon the requested server address."
+      org.opencontainers.image.source: "{{ .GitURL }}"
+      org.opencontainers.image.version: "{{ .Version }}"
+      org.opencontainers.image.revision: "{{ .FullCommit }}"
+      org.opencontainers.image.created: "{{ .Date }}"
+      org.opencontainers.image.name: "{{ .ProjectName }}"
 scoops:
   - repository:
       owner: itzg
